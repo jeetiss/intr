@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>апчхи</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<script>
+  
+  function getVoices(lang) {
+    return new Promise((resolve, reject) => {
+      const handler = (pop) => {
+          const voises = speechSynthesis.getVoices()
+          console.log('тутуту')
+          speechSynthesis.removeEventListener('voiceschanged', handler)
+          resolve(voises.filter(val => val.lang === lang))
+      }
+
+      speechSynthesis.addEventListener('voiceschanged', handler)
+    })
+  }
+
+  getVoices('ru-RU').then(voices => {
+    const msg = new SpeechSynthesisUtterance('Привет пупсик');
+    msg.voice = voices[0]
+
+    speechSynthesis.speak(msg)
+  }) ;
+</script>
+
+</body>
+</html>
